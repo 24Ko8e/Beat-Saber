@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Saber : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public LayerMask layer;
+    Vector3 previousPos;
+    public GameManager gameManager;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 1.0f, layer))
+        {
+            if (Vector3.Angle(transform.position - previousPos, hit.transform.up) > 130)
+            {
+                Destroy(hit.transform.gameObject);
+                gameManager.updateScore();
+            }
+        }
+        previousPos = transform.position;
     }
 }
